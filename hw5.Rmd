@@ -40,36 +40,25 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
 ```{r}
-zip_df = list.files(path = 'zip_file' ,pattern = "\\.csv$", full.names = TRUE)
+zip_path = list.files(path = 'zip_file' ,pattern = "\\.csv$", full.names = TRUE)
 
-```
-
-
-```{r}
-read_zip = function(path) {
-  table = read.csv(path)|>
-    pivot_longer(
-      week_1:week_8,
-      names_to = 'weeks',
-      values_to = 'arm'
+zip_name = 
+  tibble(
+    file_name = list.files(path = 'zip_file')
     )
-  table
-    
-  
-}
-
 
 ```
 
 
-```{r}
-
-```
+``
 
 
 
 
 
+
+
+Problem 3
 
 
 

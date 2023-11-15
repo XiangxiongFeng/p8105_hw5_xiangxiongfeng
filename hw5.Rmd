@@ -60,6 +60,8 @@ zip_name =
 
 Problem 3
 
+# association between effect size and test power
+
 ```{r}
 simulate_test = function(mu, n=30, sigma =5, alpha = 0.05) {
   data =
@@ -82,7 +84,7 @@ simulate_test = function(mu, n=30, sigma =5, alpha = 0.05) {
 }
 
 
-simulate_test(mu=2, n=30, sigma =5, alpha = 0.05)
+
 
 
 ```
@@ -110,8 +112,33 @@ sim_results_df|>
   group_by(test_power, mu)|>
   filter(test_power == 'rejected')|>
   summarise(n_obs = n())|>
-  ggplot(aes(x = mu, y = n_obs)) + geom_point()+geom_line()
+  mutate(rejected_proportion = n_obs/sum(n_obs))|>
+  ggplot(aes(x = mu, y = rejected_proportion)) + geom_point()+geom_line() + ggtitle('association between effect size and test power')
 ```
+
+
+The proportion of 'rejected' (the power of the test) is increasing with a larger effect size.
+
+
+
+
+# relation between average estimated mu and true mu
+```{r}
+sim_results_df|>
+  group_by(mu)|>
+  summarise(mean_mu = mean(mu_hat))|>
+  ggplot(aes(x = mu, y = mean_mu)) + geom_point()+geom_line()+ggtitle('average estimated mu vs. true mu')
+  
+  
+  
+  
+  
+```
+
+
+
+
+
 
 
 

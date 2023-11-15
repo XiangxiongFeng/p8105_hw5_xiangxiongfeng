@@ -358,21 +358,16 @@ display: none;
 
 
 <p>Problem 2</p>
-<pre class="r"><code>zip_df = 
-  tibble(
-    id =  c(1:20),
-    samp = list.files(path = &#39;zip_file&#39;)
-  )</code></pre>
-<pre class="r"><code>zip_table = function(x){
-  table =
-    read.csv(zip_file/x)|&gt;
+<pre class="r"><code>zip_df = list.files(path = &#39;zip_file&#39; ,pattern = &quot;\\.csv$&quot;, full.names = TRUE)</code></pre>
+<pre class="r"><code>read_zip = function(path) {
+  table = read.csv(path)|&gt;
     pivot_longer(
-      week_1:week8,
-      names_to = &#39;week&#39;,
-      values_to = &#39;arm&#39;)
+      week_1:week_8,
+      names_to = &#39;weeks&#39;,
+      values_to = &#39;arm&#39;
+    )
   table
     
-
   
 }</code></pre>
 

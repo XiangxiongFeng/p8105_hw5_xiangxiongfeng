@@ -16,6 +16,7 @@ Problem 2
 library(tidyverse)
 library(p8105.datasets)
 library(viridis)
+library(purrr)
 
 knitr::opts_chunk$set(
 	echo = TRUE,
@@ -39,27 +40,25 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
 ```{r}
-zip_df = 
-  tibble(
-    id =  c(1:20),
-    samp = list.files(path = 'zip_file')
-  )
+zip_df = list.files(path = 'zip_file' ,pattern = "\\.csv$", full.names = TRUE)
+
 ```
 
 
 ```{r}
-zip_table = function(x){
-  table =
-    read.csv(zip_file/x)|>
+read_zip = function(path) {
+  table = read.csv(path)|>
     pivot_longer(
-      week_1:week8,
-      names_to = 'week',
-      values_to = 'arm')
+      week_1:week_8,
+      names_to = 'weeks',
+      values_to = 'arm'
+    )
   table
     
-
   
 }
+
+
 ```
 
 

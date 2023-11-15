@@ -7,11 +7,6 @@ output: html_document
 
 
 
-
-
-Problem 2
-
-
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(p8105.datasets)
@@ -39,51 +34,62 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 
 ```
 
+# Problem 2
+
+
+
+
 ```{r}
+
 zip_path = 
   tibble(
     path = 
       list.files(path = 'zip_file' ,pattern = "\\.csv$", full.names = TRUE))
 
 ```
-
+```
 
 ```{r}
 zip_name = 
   tibble(
     file_name = list.files(path = 'zip_file')
     )|>
-  bind_cols(zip_path)
-
-zip_name = 
-  zip_name|>
-  mutate(file = map(zip_name$path, read.csv))|>
+  bind_cols(zip_path)|>
+  mutate(file = map(path, read.csv))|>
   unnest(file)|>
   pivot_longer(
     week_1:week_8,
     names_to = 'time',
     values_to = 'value'
-  )
-  
-  
-  
-  
-```
-
-
-  
-  
-  
-  
-  
-  mutate(data = map(zip_name$path, read.csv))|>
-  unnest(data)|>
-  pivot_longer(
-    week_1:week_8,
-    names_to = 'time',
-    values_to = 'value'
   )|>
-  select(-path)
+  separate(file_name, into = c('arm', 'id'))
+  
+  
+  
+  
+```
+
+# plots
+  
+  
+```{r}
+#control arm
+zip_name|>
+  group_by(id, time, value)|>
+  ggplot(aes(x = time, y = value)) +
+  geom_point(aes(color = id))+ facet_grid(.~arm)
+  
+
+```
+  ggplot(aes(x = time, y = value)) + 
+  geom_point(aes(color = id))
+```
+  
+  
+  
+  
+```{r}
+
 ```
 
 
@@ -94,7 +100,9 @@ zip_name =
 
 
 
-Problem 3
+
+# Problem 3
+
 
 # association between effect size and test power
 

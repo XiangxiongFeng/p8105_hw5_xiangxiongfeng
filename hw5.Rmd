@@ -40,17 +40,37 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
 ```{r}
-zip_path = list.files(path = 'zip_file' ,pattern = "\\.csv$", full.names = TRUE)
-
-zip_name = 
+zip_path = 
   tibble(
-    file_name = list.files(path = 'zip_file')
-    )
+    path = 
+      list.files(path = 'zip_file' ,pattern = "\\.csv$", full.names = TRUE))
 
 ```
 
 
-``
+```{r}
+zip_name = 
+  tibble(
+    file_name = list.files(path = 'zip_file')
+    )
+  
+```
+
+```{r}
+
+  
+```
+  mutate(data = map(zip_name$path, read.csv))|>
+  unnest(data)|>
+  pivot_longer(
+    week_1:week_8,
+    names_to = 'time',
+    values_to = 'value'
+  )|>
+  select(-path)
+```
+
+
 
 
 

@@ -138,7 +138,16 @@ sim_results_df|>
 
 
 
-
-
-
+```{r}
+sim_results_df|>
+  filter(test_power == 'rejected')|>
+  group_by(mu)|>
+  summarise(mean_mu = mean(mu_hat))|>
+  ggplot(aes(x = mu, y = mean_mu)) + geom_point()+geom_line()+ggtitle('average estimated mu when null is rejected vs. true mu')
+  
+  
+```
+  
+From two plots above, we can see that the sample average estimated mu for which null is rejected only approximately equal to the true mu when the true mu is relatively large (>4).
+This is because a larger effect size can increase the power of the test.
 

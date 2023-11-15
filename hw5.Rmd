@@ -52,14 +52,30 @@ zip_path =
 zip_name = 
   tibble(
     file_name = list.files(path = 'zip_file')
-    )
+    )|>
+  bind_cols(zip_path)
+
+zip_name = 
+  zip_name|>
+  mutate(file = map(zip_name$path, read.csv))|>
+  unnest(file)|>
+  pivot_longer(
+    week_1:week_8,
+    names_to = 'time',
+    values_to = 'value'
+  )
+  
+  
+  
   
 ```
 
-```{r}
 
   
-```
+  
+  
+  
+  
   mutate(data = map(zip_name$path, read.csv))|>
   unnest(data)|>
   pivot_longer(

@@ -102,11 +102,16 @@ sim_results_df =
     p_value > 0.05 ~ 'failed'
   ))
 
-sim_results_df|>
-  group_by(mu, mu_hat, p_value, test_power)|>
-  summarise(mean(mu_hat), mean(p_value))
+
 ```
 
+```{r}
+sim_results_df|>
+  group_by(test_power, mu)|>
+  filter(test_power == 'rejected')|>
+  summarise(n_obs = n())|>
+  ggplot(aes(x = mu, y = n_obs)) + geom_point()+geom_line()
+```
 
 
 

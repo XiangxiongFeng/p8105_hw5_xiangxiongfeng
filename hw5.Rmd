@@ -5,17 +5,67 @@ date: "2023-11-15"
 output: html_document
 ---
 
+
+
+
+
 Problem 2
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(p8105.datasets)
+library(viridis)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+
+```
 
 ```{r}
 zip_df = 
   tibble(
-    list.files(path = 'zip_file')
+    id =  c(1:20),
+    samp = list.files(path = 'zip_file')
   )
 ```
 
 
+```{r}
+zip_table = function(x){
+  table =
+    read.csv(zip_file/x)|>
+    pivot_longer(
+      week_1:week8,
+      names_to = 'week',
+      values_to = 'arm')
+  table
+    
 
+  
+}
+```
+
+
+```{r}
+
+```
 
 
 

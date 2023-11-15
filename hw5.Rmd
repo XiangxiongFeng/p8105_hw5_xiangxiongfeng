@@ -60,6 +60,52 @@ zip_name =
 
 Problem 3
 
+```{r}
+simulate_test = function(mu, n=30, sigma =5, alpha = 0.05) {
+  data =
+    rnorm(n, mean = mu, sd = sigma)
+  
+  t_result = 
+    t.test(data, alpha = 0.05)|>
+    broom::tidy()
+  
+  estimate = t_result$estimate
+  p_value = t_result$p.value
+  
+  table =
+    tibble(
+      mu_hat = estimate,
+      p_value = p_value,
+    )
+  
+  table
+}
+
+
+simulate_test(mu=2, n=30, sigma =5, alpha = 0.05)
+
+
+```
+
+```{r}
+sim_results_df = 
+  expand_grid(
+    mu = c(1,2,3,4,5,6),
+    iter = 1:5000
+  ) |> 
+  mutate(
+    results = map(mu, simulate_test)
+  ) |> 
+  unnest(results)|>
+  mutate(test_power = case_when(
+    p_value <= 0.05 ~ 'rejected',
+    p_value > 0.05 ~ 'failed'
+  ))
+
+sim_results_df|>
+  group_by(mu, mu_hat, p_value, test_power)|>
+  summarise(mean(mu_hat), mean(p_value))
+```
 
 
 

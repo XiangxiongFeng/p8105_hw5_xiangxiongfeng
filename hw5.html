@@ -366,6 +366,66 @@ zip_name =
     )</code></pre>
 <p>``</p>
 <p>Problem 3</p>
+<pre class="r"><code>simulate_test = function(mu, n=30, sigma =5, alpha = 0.05) {
+  data =
+    rnorm(n, mean = mu, sd = sigma)
+  
+  t_result = 
+    t.test(data, alpha = 0.05)|&gt;
+    broom::tidy()
+  
+  estimate = t_result$estimate
+  p_value = t_result$p.value
+  
+  table =
+    tibble(
+      mu_hat = estimate,
+      p_value = p_value,
+    )
+  
+  table
+}
+
+
+simulate_test(mu=2, n=30, sigma =5, alpha = 0.05)</code></pre>
+<pre><code>## # A tibble: 1 × 2
+##   mu_hat p_value
+##    &lt;dbl&gt;   &lt;dbl&gt;
+## 1   1.58   0.119</code></pre>
+<pre class="r"><code>sim_results_df = 
+  expand_grid(
+    mu = c(1,2,3,4,5,6),
+    iter = 1:5000
+  ) |&gt; 
+  mutate(
+    results = map(mu, simulate_test)
+  ) |&gt; 
+  unnest(results)|&gt;
+  mutate(test_power = case_when(
+    p_value &lt;= 0.05 ~ &#39;rejected&#39;,
+    p_value &gt; 0.05 ~ &#39;failed&#39;
+  ))
+
+sim_results_df|&gt;
+  group_by(mu, mu_hat, p_value, test_power)|&gt;
+  summarise(mean(mu_hat), mean(p_value))</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;mu&#39;, &#39;mu_hat&#39;, &#39;p_value&#39;. You can override
+## using the `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 30,000 × 6
+## # Groups:   mu, mu_hat, p_value [30,000]
+##       mu mu_hat p_value test_power `mean(mu_hat)` `mean(p_value)`
+##    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;           &lt;dbl&gt;
+##  1     1  -2.28 0.0172  rejected            -2.28         0.0172 
+##  2     1  -2.12 0.00970 rejected            -2.12         0.00970
+##  3     1  -2.07 0.0573  failed              -2.07         0.0573 
+##  4     1  -2.03 0.0652  failed              -2.03         0.0652 
+##  5     1  -1.92 0.0183  rejected            -1.92         0.0183 
+##  6     1  -1.79 0.0355  rejected            -1.79         0.0355 
+##  7     1  -1.78 0.0884  failed              -1.78         0.0884 
+##  8     1  -1.70 0.0827  failed              -1.70         0.0827 
+##  9     1  -1.69 0.125   failed              -1.69         0.125  
+## 10     1  -1.67 0.117   failed              -1.67         0.117  
+## # ℹ 29,990 more rows</code></pre>
 
 
 

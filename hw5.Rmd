@@ -75,15 +75,13 @@ zip_name =
 ```{r}
 #control arm
 zip_name|>
-  group_by(id, time, value)|>
+  group_by(id)|>
   ggplot(aes(x = time, y = value)) +
-  geom_point(aes(color = id))+ facet_grid(.~arm)
+  geom_point()+ facet_grid(.~arm)
   
 
 ```
-  ggplot(aes(x = time, y = value)) + 
-  geom_point(aes(color = id))
-```
+
   
   
   

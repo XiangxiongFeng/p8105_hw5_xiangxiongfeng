@@ -80,7 +80,7 @@ zip_name =
 ```{r}
 #control arm
 zip_name|>
-  ggplot(aes(x = week, y = value, group = arm, color = arm)) +
+  ggplot(aes(x = week, y = value, group = arm, color = id)) +
   geom_path() +facet_grid(.~arm)
   
 
